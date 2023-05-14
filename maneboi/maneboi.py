@@ -2,16 +2,17 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import ClassVar
+from rich.console import RenderableType
 
 
-from textual import work
+from textual import work, on
 from pfzy import fuzzy_match
 from textual.app import App, ComposeResult
-from textual.containers import VerticalScroll
-from textual.widgets import Input, Markdown
+from textual.containers import VerticalScroll, Container
+from textual.widgets import Input, Markdown, OptionList
 
-database: dict[str, dict[str, str]] = {}
-keys: list[str] = []
+database: dict[RenderableType, dict[str, str]] = {}
+keys: list[RenderableType] = []
 
 
 def build_database():
@@ -32,26 +33,29 @@ def build_database():
     keys.extend(list(database))
 
 
-async def find_match(word, haystack):
-    results = await fuzzy_match(word, haystack, key="value")
+async def find_match(results):
     seen = set()
     for result in results:
-        if (title := database[result['value']]['title']) in seen:
+        key = result['value']
+        value = database[key]
+        if (title := value['title']) in seen:
             continue
         seen.add(title)
-        yield database[result['value']]
+        yield key, value
 
 
 class DictionaryApp(App):
     """Searches ab dictionary API as-you-type."""
 
-    CSS_PATH = "dictionary.css"
+    CSS_PATH = "maneboi.css"
     KEYS: ClassVar[list[str]] = []
 
     def compose(self) -> ComposeResult:
         yield Input(placeholder="Search for a word")
-        with VerticalScroll(id="results-container"):
-            yield Markdown(id="results")
+        with Container(id="result-area"):
+            yield OptionList(id="search-results")
+            with VerticalScroll(id="results-container"):
+                yield Markdown(id="results")
 
     def on_mount(self) -> None:
         """Called when app starts."""
@@ -65,20 +69,27 @@ class DictionaryApp(App):
             self.lookup_word(message.value)
         else:
             # Clear the results
-            self.query_one("#results", Markdown).update("")
+            self.query_one("#search-results", OptionList).clear_options()
 
     @work(exclusive=True)
     async def lookup_word(self, word: str) -> None:
         """Looks up a word."""
 
         try:
-            results = [result async for result in find_match(word, keys)]
+            results = await fuzzy_match(word, keys, key="value") # type: ignore
         except KeyError:
             self.query_one("#results", Markdown).update("No matches found.")
+            self.query_one("#search-results", OptionList).clear_options()
         else:
-            if word == self.query_one(Input).value:
-                markdown = self.make_word_markdown(results)
-                self.query_one("#results", Markdown).update(markdown)
+            options = [result['value'] for result in results]
+            self.query_one("#search-results", OptionList).clear_options()
+            self.query_one("#search-results", OptionList).add_options(options)
+
+    @on(OptionList.OptionSelected)
+    def option_selected(self, event: OptionList.OptionSelected) -> None:
+        content = database[event.option.prompt]
+        md = self.make_word_markdown(content)
+        self.query_one("#results", Markdown).update(md)
 
     def make_word_markdown(self, results: object) -> str:
         """Convert the results in to markdown."""

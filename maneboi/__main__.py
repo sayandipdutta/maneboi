@@ -1,4 +1,4 @@
-from maneboi import ManeboiApp
+from maneboi.maneboi import ManeboiApp
 
 def main() -> None:
     app = ManeboiApp()

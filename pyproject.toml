@@ -1,0 +1,7 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setyptools.build_meta"
+
+[project]
+name = "maneboi"
+version = "0.0.1"

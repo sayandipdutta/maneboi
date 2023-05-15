@@ -44,7 +44,7 @@ async def find_match(results):
         yield key, value
 
 
-class DictionaryApp(App):
+class ManeboiApp(App):
     """Searches ab dictionary API as-you-type."""
 
     CSS_PATH = "maneboi.css"
@@ -106,5 +106,5 @@ class DictionaryApp(App):
 
 
 if __name__ == "__main__":
-    app = DictionaryApp()
+    app = ManeboiApp()
     app.run()

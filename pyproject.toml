@@ -25,6 +25,9 @@ dependencies = [
   "pfzy ~= 0.3.4",
 ]
 
+[project.scripts]
+maneboi = "maneboi.__main__:main"
+
 [project.urls]
 homepage = "https://github.com/sayandipdutta/maneboi"
 repository = "https://github.com/sayandipdutta/maneboi.git"

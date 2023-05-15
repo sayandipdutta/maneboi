@@ -4,14 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "maneboi"
-homepage = "https://github.com/sayandipdutta/maneboi"
 version = "0.0.2"
+description = "Fuzzy search through a database"
+license = {file = "LICENSE"}
+keywords = ["tui", "fuzzy-find"]
 authors = [
   { name="Sayandip Dutta", email="sayandip199309@gmail.com" },
 ]
-description = "Fuzzy search through a database"
+authors = [
+  { name="Sayandip Dutta", email="sayandip199309@gmail.com" },
+]
 requires-python = ">=3.10"
-license = "MIT"
 readme = "README.md"
 classifiers = [
   "Programming Language :: Python :: 3",
@@ -21,3 +24,7 @@ dependencies = [
   "textual[dev] ~=0.24.1",
   "pfzy ~= 0.3.4",
 ]
+
+[project.urls]
+homepage = "https://github.com/sayandipdutta/maneboi"
+repository = "https://github.com/sayandipdutta/maneboi.git"

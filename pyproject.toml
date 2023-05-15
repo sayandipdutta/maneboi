@@ -5,3 +5,16 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "maneboi"
 version = "0.0.2"
+authors = [
+  { name="Sayandip Dutta", email="sayandip199309@gmail.com" },
+]
+description = "Fuzzy search through a database"
+requires-python = ">=3.10"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+  "textual ~=0.24.0",
+  "pfzy ~= 0.3.4",
+]

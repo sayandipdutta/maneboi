@@ -17,3 +17,7 @@ aliases: ["foo", "bar", "baz"]
 ---
 <Rest of the content>
 ```
+- From the root folder, run the following command in your shell:
+```shell
+$ textual run maneboi/maneboi.py
+```

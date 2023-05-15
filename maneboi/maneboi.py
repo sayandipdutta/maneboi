@@ -24,7 +24,7 @@ def build_database():
                 md = {"title": file.stem, "message": file_content}
                 for line in file_content.splitlines():
                     if line.startswith("aliases:"):
-                        start = line.index('[')
+                        start = line.index("[")
                         content = eval(line[start:])
                         content.append(file.stem)
                         for name in content:
@@ -36,9 +36,9 @@ def build_database():
 async def find_match(results):
     seen = set()
     for result in results:
-        key = result['value']
+        key = result["value"]
         value = database[key]
-        if (title := value['title']) in seen:
+        if (title := value["title"]) in seen:
             continue
         seen.add(title)
         yield key, value
@@ -76,12 +76,12 @@ class DictionaryApp(App):
         """Looks up a word."""
 
         try:
-            results = await fuzzy_match(word, keys, key="value") # type: ignore
+            results = await fuzzy_match(word, keys, key="value")  # type: ignore
         except KeyError:
             self.query_one("#results", Markdown).update("No matches found.")
             self.query_one("#search-results", OptionList).clear_options()
         else:
-            options = [result['value'] for result in results]
+            options = [result["value"] for result in results]
             self.query_one("#search-results", OptionList).clear_options()
             self.query_one("#search-results", OptionList).add_options(options)
 

@@ -2,13 +2,12 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import ClassVar
-from rich.console import RenderableType
 
-
-from textual import work, on
 from pfzy import fuzzy_match
+from rich.console import RenderableType
+from textual import on, work
 from textual.app import App, ComposeResult
-from textual.containers import VerticalScroll, Container
+from textual.containers import Container, VerticalScroll
 from textual.widgets import Input, Markdown, OptionList
 
 database: dict[RenderableType, dict[str, str]] = {}
